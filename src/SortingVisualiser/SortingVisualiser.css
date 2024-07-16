@@ -10,3 +10,21 @@
     margin: 0 1px;
 }
 
+.button-container {
+    background-color: blue;
+    padding: 1%;
+}
+
+.userButton {
+    margin-left: 5%;
+    background-color: blue;
+    border: 0;
+    color: white;
+    font-family: 'Courier New', Courier, monospace;
+    cursor: pointer;
+}
+
+.userButton:hover {
+    color: lightgray;
+}
+
