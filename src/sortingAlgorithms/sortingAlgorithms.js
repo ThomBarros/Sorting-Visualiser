@@ -19,7 +19,7 @@ function mergeSortHelper(
     mergeSortHelper(auxiliaryArray, middleIdx + 1, endIdx, mainArray, animations);
     doMerge(mainArray, startIdx, middleIdx, endIdx, auxiliaryArray, animations);
 }
-  
+
 function doMerge(
     mainArray,
     startIdx,
@@ -76,84 +76,48 @@ function doMerge(
     }
 }
 
+
 export function getQuickSortAnimations(array) {
     const animations = [];
     if (array.length <= 1) return array;
-    quickSort(array, 0, (array.length - 1), animations);
+    quickSortHelper(array, 0, array.length - 1, animations);
     return animations;
 }
 
-function quickSort(
-    mainArray,
-    startIdx,
-    endIdx,
-    animations,
-) {
-    // Implementation of quick sort using Lomuto partition scheme with "fat pivot"
-    if (startIdx >= 0 && startIdx < endIdx) {
-        const [lesser, greater] = quickSortPartition(mainArray, startIdx, endIdx, animations);
-        quickSort(mainArray, startIdx, (lesser - 1), animations);
-        quickSort(mainArray, (greater + 1), endIdx, animations);
+function quickSortHelper(array, low, high, animations) {
+    if (low < high) {
+        const pi = partition(array, low, high, animations);
+        quickSortHelper(array, low, pi - 1, animations);
+        quickSortHelper(array, pi + 1, high, animations);
     }
 }
 
-function quickSortPartition(
-    mainArray,
-    startIdx,
-    endIdx,
-    animations,
-) {
-    let pivot = mainArray[Math.floor((startIdx + endIdx) / 2)];
-    let lesser = startIdx;
-    let equal = startIdx;
-    let greater = endIdx;
-
-    while (equal <= greater) {
-        if (mainArray[equal] < pivot) {
-            // These are the values that we're comparing; we push them once
-            // to change their color.
-            animations.push([equal, pivot]);
-            // These are the values that we're comparing; we push them a second
-            // time to revert their color.
-            animations.push([equal, pivot]);
-
-            swapElements(mainArray, equal, lesser);
-
-            animations.push([equal, lesser]); 
-            // move the bars
-
-            lesser = lesser + 1;
-            equal = equal + 1;
-        } else if (mainArray[equal] > pivot) {
-            // These are the values that we're comparing; we push them once
-            // to change their color.
-            animations.push([equal, pivot]);
-            // These are the values that we're comparing; we push them a second
-            // time to revert their color.
-            animations.push([equal, pivot]);
-
-            swapElements(mainArray, equal, greater);
-
-            animations.push([equal, greater]) 
-            // move the bars
-
-            greater = greater - 1;
-        } else { // if mainArray[equal] == pivot
-            // These are the values that we're comparing; we push them once
-            // to change their color.
-            animations.push([equal, pivot]);
-            // These are the values that we're comparing; we push them a second
-            // time to revert their color.
-            animations.push([equal, pivot]);
-
-            animations.push([equal, pivot])
-
-            equal = equal + 1;
+function partition(array, low, high, animations) {
+    const pivot = array[high];
+    let i = low - 1;
+    for (let j = low; j < high; j++) {
+        // These are the values that we're comparing; we push them once to change their color.
+        animations.push([j, high]);
+        // These are the values that we're comparing; we push them a second time to revert their color.
+        animations.push([j, high]);
+        if (array[j] <= pivot) {
+            i++;
+            // We swap the values at index i and j.
+            animations.push([i, array[j], j, array[i]]);
+            swap(array, i, j);
+        } else {
+            // If no swap happens, we still need to push something to maintain the structure.
+            animations.push([i + 1, array[i + 1], i + 1, array[i + 1]]);
         }
     }
-    return [lesser, greater];
+    // We swap the pivot with the element at index i + 1.
+    animations.push([i + 1, array[high], high, array[i + 1]]);
+    swap(array, i + 1, high);
+    return i + 1;
 }
 
-function swapElements (array, index1, index2) {
-    array[index1] = array.splice(index2, 1, array[index1])[0];
+function swap(array, i, j) {
+    const temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
 }
