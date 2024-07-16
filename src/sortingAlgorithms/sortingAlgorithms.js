@@ -90,9 +90,9 @@ export function getQuickSortAnimations(array) {
 
 function quickSortHelper(array, low, high, animations) {
     if (low < high) {
-        const pi = partition(array, low, high, animations);
-        quickSortHelper(array, low, pi - 1, animations);
-        quickSortHelper(array, pi + 1, high, animations);
+        const part = partition(array, low, high, animations);
+        quickSortHelper(array, low, part - 1, animations);
+        quickSortHelper(array, part + 1, high, animations);
     }
 }
 
@@ -116,60 +116,56 @@ function partition(array, low, high, animations) {
 
 
 // --------------------------Heap Sort---------------------------
-
 export function getHeapSortAnimations(array) {
     const animations = [];
     if (array.length <= 1) return array;
-    heapSortHelper(array, 0, array.length - 1, animations);
+    heapSort(array, animations);
     return animations;
 }
 
-
-function heapSortHelper() {
-
-}
-
-
-function buildMaxHeap(array) {
+function buildMaxHeap(array, animations) {
     for (let i = Math.floor(array.length / 2) - 1; i >= 0; i--) {
-        heapify(array, i, array.length);
+        heapify(array, i, array.length, animations);
     }
 }
 
-
-function heapify(array, index, heapSize) {
+function heapify(array, index, heapSize, animations) {
     let largest = index;
     const left = 2 * index + 1;
     const right = 2 * index + 2;
-    if (left < heapSize && array[left] > array[largest]) {
-      largest = left;
+
+    if (left < heapSize) {
+        animations.push(['compare', left, largest]); // Highlight comparison
+        if (array[left] > array[largest]) {
+            largest = left;
+        }
+        animations.push(['revert', left, largest]); // Revert colors
     }
-    if (right < heapSize && array[right] > array[largest]) {
-      largest = right;
+
+    if (right < heapSize) {
+        animations.push(['compare', right, largest]); // Highlight comparison
+        if (array[right] > array[largest]) {
+            largest = right;
+        }
+        animations.push(['revert', right, largest]); // Revert colors
     }
+
     if (largest !== index) {
-      [array[index], array[largest]] = [array[largest], array[index]];
-      heapify(array, largest, heapSize);
+        animations.push(['swap', index, array[largest], largest, array[index]]); // Swap animation
+        swap(array, index, largest);
+        heapify(array, largest, heapSize, animations);
     }
 }
 
-
-
-function heapSort(array) {
-    buildMaxHeap(array);
+function heapSort(array, animations) {
+    buildMaxHeap(array, animations);
     for (let i = array.length - 1; i > 0; i--) {
-        [array[0], array[i]] = [array[i], array[0]];
-        heapify(array, 0, i);
+        animations.push(['swap', 0, array[i], i, array[0]]); // Swap animation
+        swap(array, 0, i);
+        heapify(array, 0, i, animations);
     }
     return array;
 }
-
-
-
-
-
-
-
 
 function swap(array, i, j) {
     const temp = array[i];

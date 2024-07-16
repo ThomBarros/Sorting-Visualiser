@@ -31,7 +31,7 @@ export default class SortingVisualizer extends React.Component {
     resetArray() {
         const array = [];
         for (let i = 0; i < NUMBER_OF_ARRAY_BARS; i++) {
-            array.push(randomIntFromInterval(5, 730));
+            array.push(randomIntFromInterval(5, 650));
         }
         this.setState({array});
     }
@@ -99,7 +99,31 @@ export default class SortingVisualizer extends React.Component {
 
 
     heapSort() {
-    // We leave it as an exercise to the viewer of this code to implement this method.
+        const animations = getHeapSortAnimations(this.state.array);
+        for (let i = 0; i < animations.length; i++) {
+            const arrayBars = document.getElementsByClassName('array-bar');
+            const animation = animations[i];
+            if (animation[0] === 'compare' || animation[0] === 'revert') {
+                const barOneIdx = animation[1];
+                const barTwoIdx = animation[2];
+                const color = animation[0] === 'compare' ? SECONDARY_COLOR : PRIMARY_COLOR;
+                setTimeout(() => {
+                    arrayBars[barOneIdx].style.backgroundColor = color;
+                    arrayBars[barTwoIdx].style.backgroundColor = color;
+                }, i * ANIMATION_SPEED_MS);
+            } else if (animation[0] === 'swap') {
+                setTimeout(() => {
+                    const barOneIdx = animation[1];
+                    const newHeightOne = animation[2];
+                    const barTwoIdx = animation[3];
+                    const newHeightTwo = animation[4];
+                    const barOneStyle = arrayBars[barOneIdx].style;
+                    const barTwoStyle = arrayBars[barTwoIdx].style;
+                    barOneStyle.height = `${newHeightOne}px`;
+                    barTwoStyle.height = `${newHeightTwo}px`;
+                }, i * ANIMATION_SPEED_MS);
+            }
+        }
     }
 
 
@@ -108,42 +132,28 @@ export default class SortingVisualizer extends React.Component {
     }
 
 
-    // NOTE: This method will only work the sorting algorithms actually return
-    // the sorted arrays; since they currently return the animations only, it is broken.
-    // Need to implment a button in render method for this.
-    // testSortingAlgorithms() {
-    //     for (let i = 0; i < 100; i++) {
-    //         const array = [];
-    //         const length = randomIntFromInterval(1, 1000);
-    //         for (let i = 0; i < length; i++) {
-    //             array.push(randomIntFromInterval(-1000, 1000));
-    //         }
-    //         const javaScriptSortedArray = array.slice().sort((a, b) => a - b);
-    //         const mergeSortedArray = getMergeSortAnimations(array.slice());
-    //         console.log(arraysAreEqual(javaScriptSortedArray, mergeSortedArray));
-    //     }
-    // }
-
     render() {
         const {array} = this.state;
-        
         return (
-        <div className="array-container">
-        {array.map((value, idx) => (
-        <div
-        className="array-bar"
-        key={idx}
-        style={{
-            backgroundColor: PRIMARY_COLOR,
-            height: `${value}px`,
-        }}></div>
-        ))}
-        <button onClick={() => this.resetArray()}>Generate New Array</button>
-        <button onClick={() => this.mergeSort()}>Merge Sort</button>
-        <button onClick={() => this.quickSort()}>Quick Sort</button>
-        <button onClick={() => this.heapSort()}>Heap Sort</button>
-        <button onClick={() => this.bubbleSort()}>Bubble Sort</button>
-        </div>
+
+            <div className="array-container">
+            {array.map((value, idx) => (
+                <div
+                className="array-bar"
+                key={idx}
+                style={{
+                    backgroundColor: PRIMARY_COLOR,
+                    height: `${value}px`,
+                }}></div>
+                ))}
+                <div className='button-container'>
+            <button onClick={() => this.resetArray()}>Generate New Array</button>
+            <button onClick={() => this.mergeSort()}>Merge Sort</button>
+            <button onClick={() => this.quickSort()}>Quick Sort</button>
+            <button onClick={() => this.heapSort()}>Heap Sort</button>
+            <button onClick={() => this.bubbleSort()}>Bubble Sort</button>
+            </div>
+            </div>
         );
     }
 }
@@ -153,14 +163,3 @@ function randomIntFromInterval(min, max) {
     // min and max included
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
-
-// Funciton for use in testing.
-// function arraysAreEqual(arrayOne, arrayTwo) {
-//     if (arrayOne.length !== arrayTwo.length) return false;
-//     for (let i = 0; i < arrayOne.length; i++) {
-//         if (arrayOne[i] !== arrayTwo[i]) {
-//             return false;
-//         }
-//     }
-//     return true;
-// }
