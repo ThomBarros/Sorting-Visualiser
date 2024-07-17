@@ -1,6 +1,8 @@
 # Sorting visualiser
 
 React app that visualises merge sort, quick sort, heap sort and bubble sort.
+Available at: https://thombarros.github.io/Sorting-Visualiser/
+
 Inspired by Clement Mihailescu.
 
 

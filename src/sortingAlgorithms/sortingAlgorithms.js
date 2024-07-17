@@ -1,5 +1,7 @@
 //-------------------Merge Sort-------------------------
 
+
+// Returns merge sort animations for the array bars
 export function getMergeSortAnimations(array) {
     const animations = [];
     if (array.length <= 1) return array;
@@ -8,6 +10,7 @@ export function getMergeSortAnimations(array) {
     return animations;
 }
 
+// Assists with the merge sort
 function mergeSortHelper(
     mainArray,
     startIdx,
@@ -16,7 +19,10 @@ function mergeSortHelper(
     animations,
   ) {
     if (startIdx === endIdx) return;
-    const middleIdx = Math.floor((startIdx + endIdx) / 2);
+
+    // Get the int approx. index of middle element in array
+    const middleIdx = Math.floor((startIdx + endIdx) / 2); 
+    
     mergeSortHelper(auxiliaryArray, startIdx, middleIdx, mainArray, animations);
     mergeSortHelper(auxiliaryArray, middleIdx + 1, endIdx, mainArray, animations);
     doMerge(mainArray, startIdx, middleIdx, endIdx, auxiliaryArray, animations);
@@ -34,15 +40,13 @@ function doMerge(
     let i = startIdx;
     let j = middleIdx + 1;
     while (i <= middleIdx && j <= endIdx) {
-        // These are the values that we're comparing; we push them once
-        // to change their color.
+        // Color comparison
         animations.push([i, j]);
-        // These are the values that we're comparing; we push them a second
-        // time to revert their color.
+        // Revert back to original colour
         animations.push([i, j]);
         if (auxiliaryArray[i] <= auxiliaryArray[j]) {
-            // We overwrite the value at index k in the original array with the
-            // value at index i in the auxiliary array.
+            // Overwrite value at index k in original array with value at 
+            // index i of auxiliary array.
             animations.push([k, auxiliaryArray[i]]);
             mainArray[k++] = auxiliaryArray[i++];
         } else {
@@ -53,26 +57,22 @@ function doMerge(
         }
     }
     while (i <= middleIdx) {
-        // These are the values that we're comparing; we push them once
-        // to change their color.
+        // Color comparison
         animations.push([i, i]);
-        // These are the values that we're comparing; we push them a second
-        // time to revert their color.
+        // Revert back to original colour
         animations.push([i, i]);
-        // We overwrite the value at index k in the original array with the
-        // value at index i in the auxiliary array.
+        // Overwrite value at index k in original matrix with value at index i in 
+        // auxiliary matrix.
         animations.push([k, auxiliaryArray[i]]);
         mainArray[k++] = auxiliaryArray[i++];
     }
     while (j <= endIdx) {
-        // These are the values that we're comparing; we push them once
-        // to change their color.
+        // Color comparison
         animations.push([j, j]);
-        // These are the values that we're comparing; we push them a second
-        // time to revert their color.
+        // Revert back to original color
         animations.push([j, j]);
-        // We overwrite the value at index k in the original array with the
-        // value at index j in the auxiliary array.
+        // Overwrite value at index k in original matrix with value at 
+        // index i in auxiliary matrix.
         animations.push([k, auxiliaryArray[j]]);
         mainArray[k++] = auxiliaryArray[j++];
     }
@@ -81,6 +81,7 @@ function doMerge(
 
 // -------------------Quick Sort-----------------------
 
+// Returns quick sort animations for the array bars
 export function getQuickSortAnimations(array) {
     const animations = [];
     if (array.length <= 1) return array;
@@ -88,6 +89,7 @@ export function getQuickSortAnimations(array) {
     return animations;
 }
 
+// Recursively runs quicksort
 function quickSortHelper(array, low, high, animations) {
     if (low < high) {
         const part = partition(array, low, high, animations);
@@ -96,18 +98,19 @@ function quickSortHelper(array, low, high, animations) {
     }
 }
 
+// Divides the array into partitions and sorts the partition
 function partition(array, low, high, animations) {
     const pivot = array[high];
     let i = low - 1;
     for (let j = low; j < high; j++) {
-        // Push the pivot index and the current index being compared
+        // Colors comparison
         animations.push([high, j]);
         if (array[j] <= pivot) {
             i++;
             animations.push([i, array[j], j, array[i]]); // Swap animation
             swap(array, i, j);
         }
-        animations.push([high, j]); // Revert color back
+        animations.push([high, j]); // Revert back to original color
     }
     animations.push([i + 1, array[high], high, array[i + 1]]); // Swap pivot to correct position
     swap(array, i + 1, high);
@@ -136,19 +139,19 @@ function heapify(array, index, heapSize, animations) {
     const right = 2 * index + 2;
 
     if (left < heapSize) {
-        animations.push(['compare', left, largest]); // Highlight comparison
+        animations.push(['compare', left, largest]); // Color comparison
         if (array[left] > array[largest]) {
             largest = left;
         }
-        animations.push(['revert', left, largest]); // Revert colors
+        animations.push(['revert', left, largest]); // Revert back to original color
     }
 
     if (right < heapSize) {
-        animations.push(['compare', right, largest]); // Highlight comparison
+        animations.push(['compare', right, largest]); // Color comparison
         if (array[right] > array[largest]) {
             largest = right;
         }
-        animations.push(['revert', right, largest]); // Revert colors
+        animations.push(['revert', right, largest]); // Revert back to original color
     }
 
     if (largest !== index) {
@@ -188,19 +191,18 @@ function bubbleSort(array, animations) {
 
         for (let j = 0; j < arrayLength - i - 1; j++) {
 
-            animations.push([i, j]); // Highlight comparision
-            animations.push([i, j]); // Revert colouring
+            animations.push([i, j]); // Color comparision
+            animations.push([i, j]); // Revert back to original color
 
             if (array[j] > array[j + 1]) {
                 animations.push([j + 1, array[j], j, array[j+1]]); //Swap animations
                 // Swap elements
                 swap(array, j, j+1);
-                //[array[j], array[j + 1]] = [array[j + 1], array[j]];
                 isSwapped = true;
             }
         }
 
-        // If no two elements were swapped in the inner loop, array is sorted
+        // If no two elements were swapped in the inner loop then array is sorted
         if (!isSwapped) 
             break;
     }
@@ -211,7 +213,7 @@ function bubbleSort(array, animations) {
 
 
 
-// swap function. Used in quicksort, heapsort.
+// swap function. Used in quicksort, heapsort and bubblesort.
 function swap(array, i, j) {
     const temp = array[i];
     array[i] = array[j];
