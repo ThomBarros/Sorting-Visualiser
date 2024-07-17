@@ -103,14 +103,23 @@ export default class SortingVisualizer extends React.Component {
         for (let i = 0; i < animations.length; i++) {
             const arrayBars = document.getElementsByClassName('array-bar');
             const animation = animations[i];
-            if (animation[0] === 'compare' || animation[0] === 'revert') {
+
+            if (animation[0] === 'compare') {
                 const barOneIdx = animation[1];
                 const barTwoIdx = animation[2];
-                const color = animation[0] === 'compare' ? SECONDARY_COLOR : PRIMARY_COLOR;
+
                 setTimeout(() => {
-                    arrayBars[barOneIdx].style.backgroundColor = color;
-                    arrayBars[barTwoIdx].style.backgroundColor = color;
+                    // Set the bars being compared to red
+                    arrayBars[barOneIdx].style.backgroundColor = SECONDARY_COLOR;
+                    arrayBars[barTwoIdx].style.backgroundColor = SECONDARY_COLOR;
                 }, i * ANIMATION_SPEED_MS);
+
+                setTimeout(() => {
+                    // Revert bars being compared back to primary color
+                    arrayBars[barOneIdx].style.backgroundColor = PRIMARY_COLOR;
+                    arrayBars[barTwoIdx].style.backgroundColor = PRIMARY_COLOR;
+                }, (i + 1) * ANIMATION_SPEED_MS);
+
             } else if (animation[0] === 'swap') {
                 setTimeout(() => {
                     const barOneIdx = animation[1];
@@ -122,6 +131,23 @@ export default class SortingVisualizer extends React.Component {
                     barOneStyle.height = `${newHeightOne}px`;
                     barTwoStyle.height = `${newHeightTwo}px`;
                 }, i * ANIMATION_SPEED_MS);
+
+
+            } else if (animation[0] === 'revert') {
+                const barOneIdx = animation[1];
+                const barTwoIdx = animation[2];
+
+                setTimeout(() => {
+                    // Set the bars being compared to red
+                    arrayBars[barOneIdx].style.backgroundColor = SECONDARY_COLOR;
+                    arrayBars[barTwoIdx].style.backgroundColor = SECONDARY_COLOR;
+                }, i * ANIMATION_SPEED_MS);
+    
+                setTimeout(() => {
+                    // Revert bars being compared back to primary color
+                    arrayBars[barOneIdx].style.backgroundColor = PRIMARY_COLOR;
+                    arrayBars[barTwoIdx].style.backgroundColor = PRIMARY_COLOR;
+                }, (i + 1) * ANIMATION_SPEED_MS);
             }
         }
     }

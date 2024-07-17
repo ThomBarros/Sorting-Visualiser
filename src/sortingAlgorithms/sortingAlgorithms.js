@@ -116,6 +116,7 @@ function partition(array, low, high, animations) {
 
 
 // --------------------------Heap Sort---------------------------
+
 export function getHeapSortAnimations(array) {
     const animations = [];
     if (array.length <= 1) return array;
@@ -172,3 +173,5 @@ function swap(array, i, j) {
     array[i] = array[j];
     array[j] = temp;
 }
+
+//-----------------------------------Bubble Sort----------------------------------

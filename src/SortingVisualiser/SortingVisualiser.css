@@ -11,13 +11,13 @@
 }
 
 .button-container {
-    background-color: blue;
+    background-color: rgb(155, 228, 155);
     padding: 1%;
 }
 
 .userButton {
     margin-left: 5%;
-    background-color: blue;
+    background-color: rgb(155, 228, 155);
     border: 0;
     color: white;
     font-family: 'Courier New', Courier, monospace;
@@ -25,6 +25,7 @@
 }
 
 .userButton:hover {
-    color: lightgray;
+    color: gray;
+    transform: scale(1.1);
 }
 
