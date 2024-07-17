@@ -168,10 +168,20 @@ function heapSort(array, animations) {
     return array;
 }
 
+
+//-----------------------------------Bubble Sort----------------------------------
+
+
+
+
+
+
+
+
+
+// swap function. Used in quicksort, heapsort.
 function swap(array, i, j) {
     const temp = array[i];
     array[i] = array[j];
     array[j] = temp;
 }
-
-//-----------------------------------Bubble Sort----------------------------------
