@@ -171,10 +171,42 @@ function heapSort(array, animations) {
 
 //-----------------------------------Bubble Sort----------------------------------
 
+export function getBubbleSortAnimations(array) {
+    const animations = [];
+    if (array.length <= 1) return array;
+    bubbleSort(array, animations);
+    return animations;
+}
 
 
+function bubbleSort(array, animations) {
+    const arrayLength = array.length;
+    let isSwapped;
 
+    for (let i = 0; i < arrayLength; i++) {
+        isSwapped = false;
 
+        for (let j = 0; j < arrayLength - i - 1; j++) {
+
+            animations.push([i, j]); // Highlight comparision
+            animations.push([i, j]); // Revert colouring
+
+            if (array[j] > array[j + 1]) {
+                animations.push([j + 1, array[j], j, array[j+1]]); //Swap animations
+                // Swap elements
+                swap(array, j, j+1);
+                //[array[j], array[j + 1]] = [array[j + 1], array[j]];
+                isSwapped = true;
+            }
+        }
+
+        // If no two elements were swapped in the inner loop, array is sorted
+        if (!isSwapped) 
+            break;
+    }
+
+    return array;
+}
 
 
 

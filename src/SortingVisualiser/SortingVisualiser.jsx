@@ -1,5 +1,5 @@
 import React from 'react';
-import {getMergeSortAnimations, getQuickSortAnimations, getHeapSortAnimations} from '../sortingAlgorithms/sortingAlgorithms.js';
+import {getMergeSortAnimations, getQuickSortAnimations, getHeapSortAnimations, getBubbleSortAnimations} from '../sortingAlgorithms/sortingAlgorithms.js';
 import './SortingVisualiser.css';
 
 // Change this value for the speed of the animations.
@@ -154,8 +154,40 @@ export default class SortingVisualizer extends React.Component {
 
 
     bubbleSort() {
-    // We leave it as an exercise to the viewer of this code to implement this method.
-    }
+        const animations = getBubbleSortAnimations(this.state.array);
+        for (let i = 0; i < animations.length; i++) {
+            const arrayBars = document.getElementsByClassName('array-bar');
+            const animation = animations[i];
+            const isComparison = animation.length === 2;
+    
+            if (isComparison) {
+                const [pivotIdx, currentIdx] = animation;
+                const barOneIdx = arrayBars[pivotIdx].style;
+                const barTwoIdx = arrayBars[currentIdx].style;
+    
+                setTimeout(() => {
+                    // Set bars being comparted to red
+                    barOneIdx.backgroundColor = SECONDARY_COLOR;
+                    barTwoIdx.backgroundColor = SECONDARY_COLOR;
+                }, i * ANIMATION_SPEED_MS);
+    
+                setTimeout(() => {
+                    // Revert bars being compared to original colour
+                    barOneIdx.backgroundColor = PRIMARY_COLOR;
+                    barTwoIdx.backgroundColor = PRIMARY_COLOR;
+                }, (i + 1) * ANIMATION_SPEED_MS);
+            } else {
+                setTimeout(() => {
+                    const [barOneIdx, newHeight, barTwoIdx, newHeightTwo] = animation;
+                    const barOneStyle = arrayBars[barOneIdx].style;
+                    const barTwoStyle = arrayBars[barTwoIdx].style;
+                    barOneStyle.height = `${newHeight}px`;
+                    barTwoStyle.height = `${newHeightTwo}px`;
+                }, i * ANIMATION_SPEED_MS);
+            }
+        }
+
+        }
 
 
     render() {
