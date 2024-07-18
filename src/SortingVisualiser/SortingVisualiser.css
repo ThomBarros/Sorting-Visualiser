@@ -1,20 +1,24 @@
+/* Separate and contain the array */
 .array-container {
     margin: auto;
     width: 82%;
     padding-top: 5px;
 }
 
+/* Format for indvidual array bar*/
 .array-bar {
     width: 2px;
     display: inline-block;
     margin: 0 1px;
 }
 
+/* Block underneath array containing buttons */
 .button-container {
     background-color: rgb(155, 228, 155);
     padding: 1%;
 }
 
+/* Buttons for sorting and array generation */
 .userButton {
     margin-left: 5%;
     background-color: rgb(155, 228, 155);
@@ -24,6 +28,7 @@
     cursor: pointer;
 }
 
+/* Make accessible */
 .userButton:hover {
     color: gray;
     transform: scale(1.1);
